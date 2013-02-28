@@ -1,0 +1,50 @@
+{
+  "name": "upstream",
+  "version": "0.1.0",
+  "description": "Real-time content streaming",
+  "author": "Wagner Camarao <functioncallback@gmail.com>",
+
+  "contributors": [
+    {
+      "name": "Wagner Camarao",
+      "email": "functioncallback@gmail.com"
+    }
+  ],
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/functioncallback/upstream.git"
+  },
+
+  "engines": {
+    "node": "0.8.x"
+  },
+
+  "dependencies": {
+    "coffee-script": "1.x",
+    "connect": "2.x",
+    "connect-assets": "2.x",
+    "express": "3.x",
+    "jade": "0.x",
+    "mongoose": "3.x",
+    "passport": "0.x",
+    "passport-google-oauth": "0.x",
+    "nib": "0.x",
+    "session.socket.io": "0.x",
+    "slug": "0.x",
+    "socket.io": "0.x",
+    "stylus": "0.x",
+    "underscore": "1.x"
+  },
+
+  "devDependencies": {
+    "nodemon": "0.6.x"
+  },
+
+  "main": "index.js",
+  "subdomain": "upstream",
+
+  "scripts": {
+    "start": "nodemon index.js"
+  }
+}

@@ -1,0 +1,5 @@
+.DS_Store
+config/auth.keys.coffee
+node_modules
+npm-install.sh
+*.log

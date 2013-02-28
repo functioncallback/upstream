@@ -1,0 +1,102 @@
+doctype 5
+html(ng-app='upstream')
+  head
+    title {{title}} @upstream real-time content streaming
+
+    link(rel='icon', href='/favicon.ico', type='image/x-icon')
+    link(rel='shortcut icon', href='/favicon.ico', type='image/x-icon')
+    link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Open+Sans:400,700')
+
+    !=css('vendor/normalize')
+    !=css('layout')
+
+    script(type='text/javascript', src='/socket.io/socket.io.js')
+
+    !=js('vendor/underscore')
+    !=js('vendor/angular')
+    !=js('vendor/angular-resource')
+    !=js('vendor/angular-ui')
+    !=js('vendor/jquery')
+    !=js('upstream')
+    !=js('modules/dashboard')
+    !=js('modules/message')
+    !=js('modules/stream')
+    !=js('modules/user')
+
+  body
+    table#layout
+
+      // HEADER
+
+      tr
+        td#header(colspan='3')
+
+          a#logo(href='/')
+            strong up
+            span stream
+
+          #title {{title}}
+
+          #search
+            input.search(placeholder='Search', ng-model='messageFilter')
+
+          #links
+            #account=user.name
+            #signout(onclick='location.href = "/signout"') Sign out
+
+      // STREAMS
+
+      tr
+        td#left(rowspan='2', ng-controller='App.Controller.Streams')
+          .abs
+            .side-title
+              strong {{streams.length || '?'}}
+              span=' STREAMS'
+              .add(ng-click='new()') + NEW
+            input.filter(placeholder='Filter', ng-model='streamFilter')
+
+          ul#streams
+            li.selected(ui-if='isNew()')
+              input.editable(ng-model='stream.name', ui-event="{ change: 'create()', blur: 'cancel()' }",
+                ui-keydown="{ esc: 'cancel()' }", placeholder='New Stream', autofocus)
+
+            li(ng-repeat='s in streams | filter:streamFilter | orderBy:"name"',
+              ng-class='{ selected: editable() }', ng-click='open()')
+
+              a(ng-hide='editable()') {{s.name}}
+                .edit(ng-click='edit()', bypass)
+
+              div(ui-if='editable()')
+                input(ng-model='stream._id', type='hidden')
+                input.editable(ng-model='stream.name', ui-event="{ change: 'update()', blur: 'cancel(10)' }",
+                  ui-keydown="{ esc: 'cancel()' }", autofocus, bypass)
+
+                .delete(ng-click='delete()')
+
+        // CONTENT
+
+        td#middle(ng-view)
+
+        // PEOPLE
+
+        td#right(rowspan='2', ng-controller='App.Controller.Users')
+          .abs
+            .side-title
+              strong {{users.length || '?'}}
+              span=' PEOPLE'
+              .add(ng-click='invite()') + INVITE
+
+            input.filter(placeholder='Filter', ng-model='userFilter')
+
+          ul#people
+            li(ng-repeat='u in users | filter:userFilter | orderBy:"name"', ng-click='open()')
+              img(ng-src='{{u.picture || "/img/avatar.png"}}')
+              span {{u.name}}
+
+      // FOOTER
+
+      tr
+        td#footer(ng-controller='App.Controller.Footer', ui-if='object')
+          textarea#message(ng-model='message.body', ui-keydown="{ enter: 'send($event)' }", autofocus)
+
+    .err.msg(ui-if='err') {{err}}

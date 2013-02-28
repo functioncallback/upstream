@@ -1,0 +1,351 @@
+@import 'nib'
+@import 'nib/gradients'
+
+$stream = slateblue
+$people = olivedrab
+
+// ---------------------------------------------------
+// default
+// ---------------------------------------------------
+
+*
+  outline: none
+  font-family: 'Open Sans'
+  border-radius: 3px
+  -webkit-font-smoothing: antialiased
+
+html, body
+  height: 100%
+  overflow: hidden
+
+h1, h2, h3, h4, h5, h6
+  font-weight: normal
+  font-size: 150%
+  line-height: 120%
+  margin: 0
+
+a
+  text-decoration: none
+
+li
+  list-style: none
+
+label
+  margin-left: 3px
+  margin-right: -3px
+
+button
+  border: none
+  padding: 5px 7px
+  font-size: 110%
+  color: #eee
+  opacity: .8
+
+  &:hover
+    cursor: pointer
+    opacity: 1
+
+  &.ok
+    background: green
+
+  &.danger
+    background: maroon
+
+input, textarea
+  border: 1px solid #888
+  color: #333
+  padding: 5px 7px
+  opacity: .5
+  margin: 0
+  width: 100%
+  box-sizing: border-box
+  font-size: 90%
+
+  &:focus
+    opacity: 1
+
+input.filter
+  background: url('/img/icon/magnifying-glass.png') no-repeat 7px 6px
+  background-size: 16px
+  padding-left: 30px
+  margin: 5px 0
+
+textarea
+  resize: none
+
+// ---------------------------------------------------
+// layout
+// ---------------------------------------------------
+
+#layout
+  width: 100%
+  height: 100%
+
+  #header
+    border-radius: 0
+    background: #111
+    position: relative
+    color: #eee
+    height: 42px
+
+  #left, #middle, #right
+    vertical-align: top
+    padding: 5px
+
+  #left, #right
+    width: 250px
+    height: 100%
+    position: relative
+
+  #middle
+    height: 100%
+
+  #footer
+    padding: 5px 7px
+
+    #message
+      height: 120px
+
+  #streams, #messages, #people
+    overflow: auto
+    height: 100%
+    padding: 0
+    margin: 0
+
+  #streams, #people
+    padding-top: 75px
+
+// ---------------------------------------------------
+// header
+// ---------------------------------------------------
+
+#logo
+  color: #eee
+  border-radius: 0
+  background: #111 url('/img/icon/globe-3.png') no-repeat 10px 10px
+  background-size: 24px
+  padding: 8px 10px 2px 42px
+  display: inline-block
+  font-size: 120%
+  height: 100%
+  opacity: .8
+
+  &:hover
+    cursor: pointer
+    opacity: 1
+
+#title
+  color: #eee
+  font-weight: bold
+  position: absolute
+  left: 270px
+  top: 12px
+
+#search
+  position: absolute
+  right: 300px
+  top: 8px
+
+  input.search
+    border: none
+    border-radius: 12px
+    background: white url('/img/icon/magnifying-glass.png') no-repeat 10px 7px
+    background-size: 16px
+    padding-left: 33px
+    opacity: .9
+
+    &:focus
+      opacity: 1
+
+#links
+  float: right
+  height: 100%
+  text-align: right
+  width: 300px
+
+  #account
+    overflow: hidden
+    text-align: right
+    text-overflow: ellipsis
+    white-space: nowrap
+
+  div
+    display: inline-block
+    padding: 10px 15px 0 0
+    opacity: .7
+
+    &:hover
+      cursor: pointer
+      opacity: 1
+
+// ---------------------------------------------------
+// content
+// ---------------------------------------------------
+
+#left
+  .side-title
+    background: $stream
+    .add
+      color: lighten($stream, 80%)
+
+#right
+  .side-title
+    background: $people
+    .add
+      color: lighten($people, 90%)
+
+#left, #right
+  .abs
+    background: white
+    position: absolute
+    padding-right: 15px
+    width: 235px
+    z-index: 1
+
+  .side-title
+    padding: 5px 7px
+    color: #eee
+
+    .add
+      font-weight: bold
+      float: right
+      opacity: .7
+
+      &:hover
+        cursor: pointer
+        opacity: 1
+
+#streams
+  li
+    &:hover
+      background-color: lighten($stream, 90%)
+      border: 1px solid lighten($stream, 70%)
+
+    &.selected
+      background-color: lighten($stream, 80%)
+      border: 1px solid lighten($stream, 30%)
+
+#people
+  li
+    &:hover
+      background-color: lighten($people, 85%)
+      border: 1px solid lighten($people, 35%)
+
+#messages
+  li
+    font-size: 90%
+    margin-right: 15px
+    padding: 3px
+
+    &:hover
+      background-color: #f5f5f5
+      border: 1px solid #ccc
+
+    .from
+      img
+        border: 1px solid #333
+        margin-right: 5px
+        vertical-align: top
+        width: 30px
+
+      strong
+        color: #555
+        display: inline-block
+        margin-top: 5px
+
+    .date
+      color: #aaa
+      margin-right: 15px
+
+    .date, .body
+      display: inline-block
+
+#streams, #messages, #people
+  li
+    background: white
+    border: 1px solid transparent
+    border-bottom: 1px solid #eee
+    opacity: .9
+
+    &:hover, &.selected
+      opacity: 1
+
+    &:hover
+      cursor: pointer
+
+    a
+      color: black
+      display: block
+
+#streams
+  li
+    background: url('/img/icon/arrow-right.png') no-repeat 7px 9px
+    background-size: 16px
+    padding: 5px 7px 5px 30px
+    width: 196px
+
+#people
+  li
+    padding: 2px
+    width: 229px
+
+    img
+      border: 1px solid $people
+      margin-right: 5px
+      vertical-align: top
+      width: 30px
+
+    span
+      display: inline-block
+      margin-top: 5px
+
+#streams, #people
+  li
+    position: relative
+
+    &:hover .edit
+      display: block
+
+    input
+      background: none
+      border: none
+      font-size: 100%
+      padding: 0 25px 0 0
+      opacity: 1
+
+    a
+      overflow: hidden
+      text-overflow: ellipsis
+      width: 175px
+      white-space: nowrap
+
+  .edit
+    background: url('/img/icon/pencil.png')
+    display: none
+
+  .delete
+    background: url('/img/icon/trash.png')
+    display: block
+
+  .edit, .delete
+    background-size: 16px 18px
+    opacity: .5
+    position: absolute
+    top: 7px
+    right: 10px
+    width: 16px
+    height: 18px
+
+    &:hover
+      opacity: 1
+
+.msg
+  padding: 25px 35px
+  position: absolute
+  top: 53px
+  left: 265px
+
+  &.err
+    background: #fee
+    border: 1px solid #d33
+    color: #d33

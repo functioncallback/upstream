@@ -1,0 +1,7 @@
+ul#messages
+  li(ng-repeat='m in messages | filter:messageFilter | orderBy: "createdAt"')
+    .from
+      img(ng-src='{{m.from.picture || "/img/avatar.png"}}')
+      strong {{m.from.name || '?'}}
+    .date {{m.createdAt | date:'MMM d, yyyy - hh:mm a'}}
+    .body {{m.body}}

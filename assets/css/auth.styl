@@ -1,0 +1,35 @@
+@import 'nib'
+@import 'nib/gradients'
+
+*
+  outline: none
+
+html, body
+  font-family: 'Open Sans', sans-serif
+  letter-spacing: 3px
+  overflow: hidden
+
+body
+  background: #111
+  padding-top: 250px
+  text-align: center
+
+#sign-in-with-google
+  background: url('/img/social/64/social_google_box_64.png') no-repeat, linear-gradient(#777 0%, #333 50%, #333 51%, #111 100%)
+  border: 1px solid #333
+  border-radius: 5px
+  color: #ccc
+  display: inline-block
+  height: 52px
+  font-size: 25px
+  opacity: .8
+  padding: 12px 7px 0 70px
+  text-decoration: none
+  transition: all .1s ease-out
+  -webkit-font-smoothing: antialiased
+
+  &:hover
+    opacity: 1
+
+  &:active
+    background: url('/img/social/64/social_google_box_64.png') no-repeat, linear-gradient(#555 0%, #333 50%, #333 51%, #151515 100%)

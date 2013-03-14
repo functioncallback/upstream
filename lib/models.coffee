@@ -1,7 +1,7 @@
 slug = require 'slug'
 _ = require 'underscore'
 mongoose = require 'mongoose'
-db = mongoose.createConnection 'mongodb://upstream:foobar@dbh26.mongolab.com:27267/upstream'
+db = mongoose.createConnection config.mongo.url
 ObjectId = mongoose.Schema.Types.ObjectId
 schemas = definitions: {}
 
@@ -20,7 +20,8 @@ def = (name, schema) ->
 extend = (base, definition) ->
   _.extend _.clone(schemas.definitions[base]), definition
 
-minify = (o) -> _.pick(o, 'name', 'slug', 'picture', 'updatedAt')
+minify = (o) ->
+  _.pick(o, 'name', 'slug', 'picture', 'updatedAt')
 
 base =
   createdAt: { type: Date, default: Date.now }

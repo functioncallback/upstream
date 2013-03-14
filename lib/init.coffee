@@ -4,6 +4,9 @@ express = require 'express'
 socketIO = require 'socket.io'
 http = require 'http'
 path = require 'path'
+
+global.config = require(path.resolve("config/#{process.env.NODE_ENV || 'development'}"))
+
 sockets = r 'sockets'
 routes = r 'routes'
 models = r 'models'

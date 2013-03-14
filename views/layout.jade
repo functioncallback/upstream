@@ -71,7 +71,7 @@ html(ng-app='upstream')
                 input.editable(ng-model='stream.name', ui-event="{ change: 'update()', blur: 'cancel(10)' }",
                   ui-keydown="{ esc: 'cancel()' }", autofocus, bypass)
 
-                .delete(ng-click='delete()')
+                .delete(ng-click='delete()', ui-if='currentUser.isAdmin')
 
         // CONTENT
 

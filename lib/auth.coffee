@@ -1,24 +1,29 @@
+fs = require 'fs'
 path = require 'path'
 passport = require 'passport'
-keys = require path.resolve "config/auth.keys"
 GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 _ = require 'underscore'
 
 exports.init = (sockets) ->
 
-  passport.use new GoogleStrategy keys.google, (accessToken, refreshToken, profile, done) ->
+  passport.use new GoogleStrategy config.auth.google, (accessToken, refreshToken, profile, done) ->
     process.nextTick () ->
+      console.log 'authenticating', profile
       User.findOne { auth: googleId: profile.id }, (err, existing) ->
+        console.log err, existing
         return done(err) if err
 
         if existing
           changes = _.pick(existing, 'name', 'familyName', 'givenName', 'email', 'picture', 'gender')
+          console.log 'updating user', changes
           User.update { _id: existing._id }, { $set: changes }, (err) ->
-            return done(err) if err
+            console.log err if err
+            return done err if err
             sockets.emit 'reload:users'
             done(null, _.extend(existing, changes))
 
         else
+          console.log 'creating user', profile
           new User({
             auth: googleId: profile.id
             name: profile.displayName
@@ -28,6 +33,7 @@ exports.init = (sockets) ->
             picture: profile._json.picture
             gender: profile._json.gender
           }).save (err, saved) ->
+            console.log err, saved
             sockets.emit 'reloadUsers' if saved
             done(err, saved)
 

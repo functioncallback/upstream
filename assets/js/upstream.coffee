@@ -46,6 +46,10 @@ build = (resource, name, pluralized) ->
 
 # directives
 
+module.directive 'autoscroll', () ->
+  return (scope, element, attrs) ->
+    $('#messages').animate { scrollTop: $(element).offset().top }, 1
+
 module.directive 'bypass', () ->
   return (scope, element, attrs) ->
     $(element).click (event) ->

@@ -1,2 +1,3 @@
-App.Controller.Dashboard = ($scope, $rootScope, $routeParams) ->
-  $rootScope.title = 'Dashboard'
+App.Controller.Dashboard = ['$rootScope', (rootScope) ->
+  rootScope.title = 'Dashboard'
+]

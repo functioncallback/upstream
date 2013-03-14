@@ -3,7 +3,11 @@ _ = require 'underscore'
 
 exports.init = (io, sessionSockets) ->
   data = online: {}, sockets: {}
-  io.set 'log level', 2
+
+  io.configure ->
+    io.set 'transports', ['xhr-polling']
+    io.set 'polling duration', 10
+    io.set 'log level', 2
 
   sessionSockets.on 'connection', (err, socket, session) ->
     return unless valid(err, socket, session)

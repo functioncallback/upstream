@@ -5,11 +5,10 @@ GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 _ = require 'underscore'
 
 fs.exists path.resolve('config/auth.keys.coffee'), (exists) ->
-  keys = if exists then require(path.resolve('config/auth.keys')) else google: {
-    clientID: process.env.CLIENT_ID
-    clientSecret: process.env.CLIENT_SECRET
-    callbackURL: process.env.CALLBACK_URL
-  }
+  keys = if exists then require(path.resolve('config/auth.keys')) else google: {}
+  keys.google.clientID = process.env.CLIENT_ID if process.env.CLIENT_ID
+  keys.google.clientSecret = process.env.CLIENT_SECRET if process.env.CLIENT_SECRET
+  keys.google.callbackURL = process.env.CALLBACK_URL if process.env.CALLBACK_URL
 
   throw 'missing config/auth.keys.coffee or ENV variables' unless _.compact(_.values(keys.google)).length
 

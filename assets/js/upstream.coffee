@@ -8,16 +8,18 @@ App.socket = io.connect()
 
 # ng-app
 
-module = angular.module('upstream', ['api', 'ui']).config ($routeProvider, $locationProvider) ->
-  $locationProvider.html5Mode(true)
+module = angular.module('upstream', ['api', 'ui']).config ['$routeProvider', '$locationProvider',
+  (routeProvider, locationProvider) ->
+    locationProvider.html5Mode(true)
 
-  $routeProvider
-    .when('/', controller: App.Controller.Dashboard, templateUrl: '/partials/dashboard')
-    .when('/:slug', controller: App.Controller.Messages, templateUrl: '/partials/messages')
-    .when('/user/:id', controller: App.Controller.PrivateMessages, templateUrl: '/partials/messages')
-    .when('/message/:id', controller: App.Controller.Message, templateUrl: '/partials/messages')
-    .when('/private/:id', controller: App.Controller.PrivateMessage, templateUrl: '/partials/messages')
-    .otherwise(redirectTo: '/')
+    routeProvider
+      .when('/', controller: App.Controller.Dashboard, templateUrl: '/partials/dashboard')
+      .when('/:slug', controller: App.Controller.Messages, templateUrl: '/partials/messages')
+      .when('/user/:id', controller: App.Controller.PrivateMessages, templateUrl: '/partials/messages')
+      .when('/message/:id', controller: App.Controller.Message, templateUrl: '/partials/messages')
+      .when('/private/:id', controller: App.Controller.PrivateMessage, templateUrl: '/partials/messages')
+      .otherwise(redirectTo: '/')
+]
 
 # api
 

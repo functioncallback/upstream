@@ -1,0 +1,19 @@
+# Steps 1-2
+# Create a mongo database on https://mongolab.com
+# Update the following with your database credentials
+
+exports.mongo =
+  url: 'mongodb://username:password@hostname.mongolab.com:27267/upstream'
+
+# Steps 3-4
+# Create a project on https://code.google.com/apis/console
+# Update the following with your project credentials
+
+exports.auth =
+  google:
+    clientID: 'xxxxxxxxxxxxxxxx.apps.googleusercontent.com'
+    clientSecret: 'xxxxxxxxxxxxxxxxxxx'
+    callbackURL: 'http://localhost:7000/auth/google/callback'
+
+# Step 5
+# Rename this file to config/development.coffee

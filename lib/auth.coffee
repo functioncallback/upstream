@@ -4,55 +4,53 @@ passport = require 'passport'
 GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 _ = require 'underscore'
 
-fs.exists path.resolve('config/auth.keys.coffee'), (exists) ->
-  keys = if exists then require(path.resolve('config/auth.keys')) else google: {}
-  keys.google.clientID = process.env.CLIENT_ID if process.env.CLIENT_ID
-  keys.google.clientSecret = process.env.CLIENT_SECRET if process.env.CLIENT_SECRET
-  keys.google.callbackURL = process.env.CALLBACK_URL if process.env.CALLBACK_URL
+exports.init = (sockets) ->
 
-  throw 'missing config/auth.keys.coffee or ENV variables' unless _.compact(_.values(keys.google)).length
+  passport.use new GoogleStrategy config.auth.google, (accessToken, refreshToken, profile, done) ->
+    process.nextTick () ->
+      console.log 'authenticating', profile
+      User.findOne { auth: googleId: profile.id }, (err, existing) ->
+        console.log err, existing
+        return done(err) if err
 
-  exports.init = (sockets) ->
+        if existing
+          changes = _.pick(existing, 'name', 'familyName', 'givenName', 'email', 'picture', 'gender')
+          console.log 'updating user', changes
+          User.update { _id: existing._id }, { $set: changes }, (err) ->
+            console.log err if err
+            return done err if err
+            sockets.emit 'reload:users'
+            done(null, _.extend(existing, changes))
 
-    passport.use new GoogleStrategy keys.google, (accessToken, refreshToken, profile, done) ->
-      process.nextTick () ->
-        User.findOne { auth: googleId: profile.id }, (err, existing) ->
-          return done(err) if err
+        else
+          console.log 'creating user', profile
+          new User({
+            auth: googleId: profile.id
+            name: profile.displayName
+            familyName: profile.name.familyName
+            givenName: profile.name.givenName
+            email: profile._json.email
+            picture: profile._json.picture
+            gender: profile._json.gender
+          }).save (err, saved) ->
+            console.log err, saved
+            sockets.emit 'reloadUsers' if saved
+            done(err, saved)
 
-          if existing
-            changes = _.pick(existing, 'name', 'familyName', 'givenName', 'email', 'picture', 'gender')
-            User.update { _id: existing._id }, { $set: changes }, (err) ->
-              return done(err) if err
-              sockets.emit 'reload:users'
-              done(null, _.extend(existing, changes))
+  passport.serializeUser (user, done) ->
+    done(null, user)
 
-          else
-            new User({
-              auth: googleId: profile.id
-              name: profile.displayName
-              familyName: profile.name.familyName
-              givenName: profile.name.givenName
-              email: profile._json.email
-              picture: profile._json.picture
-              gender: profile._json.gender
-            }).save (err, saved) ->
-              sockets.emit 'reloadUsers' if saved
-              done(err, saved)
+  passport.deserializeUser (obj, done) ->
+    done(null, obj)
 
-    passport.serializeUser (user, done) ->
-      done(null, user)
+exports.route = (app, requireGuest) ->
 
-    passport.deserializeUser (obj, done) ->
-      done(null, obj)
+  app.get '/auth/google', requireGuest,
+    passport.authenticate('google',
+      scope: ['https://www.googleapis.com/auth/userinfo.profile',
+              'https://www.googleapis.com/auth/userinfo.email']), ->
 
-  exports.route = (app, requireGuest) ->
-
-    app.get '/auth/google', requireGuest,
-      passport.authenticate('google',
-        scope: ['https://www.googleapis.com/auth/userinfo.profile',
-                'https://www.googleapis.com/auth/userinfo.email']), ->
-
-    app.get '/auth/google/callback', requireGuest,
-      passport.authenticate('google', failureRedirect: '/'), (req, res) ->
-        req.session?.user = req.session.passport?.user
-        res.redirect '/'
+  app.get '/auth/google/callback', requireGuest,
+    passport.authenticate('google', failureRedirect: '/'), (req, res) ->
+      req.session?.user = req.session.passport?.user
+      res.redirect '/'

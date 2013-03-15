@@ -48,8 +48,9 @@ build = (resource, name, pluralized) ->
 
 module.directive 'autoscroll', () ->
   return (scope, element, attrs) ->
+    return unless scope.$last
     ul = $('#messages')
-    ul.animate { scrollTop: ul.prop('scrollHeight') }, 1
+    ul.animate { scrollTop: ul.prop('scrollHeight') }, 'fast'
 
 module.directive 'bypass', () ->
   return (scope, element, attrs) ->

@@ -44,18 +44,18 @@ resource = inject: (app) ->
       Resource.findOne { _id: req.params.id }, (err, doc) ->
         res.send doc
 
-    app.post endpoint, requireUser, (req, res) ->
-      console.log 'req.body ------> ', req.body
-      doc = new Resource(req.body).save (err) ->
-        console.log 'doc ------------> ', doc
-        res.send doc
+    #app.post endpoint, requireUser, (req, res) ->
+    #  console.log 'req.body ------> ', req.body
+    #  doc = new Resource(req.body).save (err) ->
+    #    console.log 'doc ------------> ', doc
+    #    res.send doc
 
-    app.put "#{endpoint}/:id", requireUser, (req, res) ->
-      Resource.findOne { _id: req.params.id }, (err, existing) ->
-        return if err or not existing
-        changes = _.omit(existing, '_id')
-        Resource.update { _id: existing._id }, { $set: changes }, (err) ->
-          res.send _.extend(existing, changes) unless err
+    #app.put "#{endpoint}/:id", requireUser, (req, res) ->
+    #  Resource.findOne { _id: req.params.id }, (err, existing) ->
+    #    return if err or not existing
+    #    changes = _.omit(existing, '_id')
+    #    Resource.update { _id: existing._id }, { $set: changes }, (err) ->
+    #      res.send _.extend(existing, changes) unless err
 
     return this
 

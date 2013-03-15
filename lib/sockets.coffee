@@ -90,9 +90,9 @@ exports.init = (io, sessionSockets) ->
 
 valid = (err, socket, session) ->
   invalid = err || (socket && (!session || !session.user))
-  if invalid
+  if socket and invalid
     socket.emit 'err', if err then 'Socket connection failed' else 'Authentication required'
-    socket.disconnect() if socket
+    socket.disconnect()
   return not invalid
 
 friendly = (err) ->

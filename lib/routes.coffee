@@ -60,7 +60,7 @@ resource = inject: (app) ->
     return this
 
 storeUser = (req, res, next) ->
-  req.user = name: 'Wagner Camarao', _id: '512ba2afbee4990000000001' if bypass
+  req.user = name: 'Wagner Camarao', _id: '512ba2afbee4990000000001', isAdmin: true if bypass
   req.session.user = req.user if bypass
   res.locals.user = req.user if bypass || req.isAuthenticated()
   next()
@@ -73,4 +73,4 @@ requireGuest = (req, res, next) ->
   return res.redirect '/' if bypass || req.isAuthenticated()
   next()
 
-bypass = 0 #true
+bypass = 0#true

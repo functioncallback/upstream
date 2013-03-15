@@ -1,8 +1,12 @@
 class App.Model.User
 
-App.Controller.Users = ['$scope', '$location', 'User',
-  (scope, location, User) ->
+App.Controller.Users = ['$scope', '$rootScope', '$location', 'User',
+  (scope, rootScope, location, User) ->
     scope.users = User.query()
+
+    App.socket.on 'currentUser', (currentUser) ->
+      rootScope.$apply -> rootScope.currentUser = currentUser
+      App.currentUser = currentUser
 
     App.socket.on 'reloadUsers', ->
       scope.users = User.query()

@@ -10,13 +10,16 @@ $people = olivedrab
 
 *
   outline: none
-  font-family: 'Open Sans'
   border-radius: 3px
   -webkit-font-smoothing: antialiased
 
 html, body
   height: 100%
   overflow: hidden
+
+body
+  font-family: 'Open Sans'
+  font-size: 90%
 
 h1, h2, h3, h4, h5, h6
   font-weight: normal
@@ -59,7 +62,6 @@ input, textarea
   margin: 0
   width: 100%
   box-sizing: border-box
-  font-size: 90%
 
   &:focus
     opacity: 1
@@ -122,7 +124,7 @@ textarea
 #logo
   color: #eee
   border-radius: 0
-  background: #111 url('/img/icon/globe-3.png') no-repeat 10px 10px
+  background: #111 url('/img/icon/globe-3.png') no-repeat 10px 8px
   background-size: 24px
   padding: 8px 10px 2px 42px
   display: inline-block
@@ -233,7 +235,6 @@ textarea
 
 #messages
   li
-    font-size: 90%
     margin-right: 15px
     padding: 3px
 
@@ -279,7 +280,7 @@ textarea
 
 #streams
   li
-    background: url('/img/icon/arrow-right.png') no-repeat 7px 9px
+    background: url('/img/icon/arrow-right.png') no-repeat 7px 7px
     background-size: 16px
     padding: 5px 7px 5px 30px
     width: 196px
@@ -301,7 +302,10 @@ textarea
 
 #streams, #people
   li
+    overflow: hidden
     position: relative
+    text-overflow: ellipsis
+    white-space: nowrap
 
     &:hover .edit
       display: block
@@ -309,7 +313,6 @@ textarea
     input
       background: none
       border: none
-      font-size: 100%
       padding: 0 25px 0 0
       opacity: 1
 
@@ -331,7 +334,7 @@ textarea
     background-size: 16px 18px
     opacity: .5
     position: absolute
-    top: 7px
+    top: 5px
     right: 10px
     width: 16px
     height: 18px

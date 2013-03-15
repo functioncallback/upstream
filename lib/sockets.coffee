@@ -15,6 +15,7 @@ exports.init = (io, sessionSockets) ->
     data.online[session.user._id] = session.user
     data.sockets[session.user._id] = socket
     socket.broadcast.emit 'signed:in', session.user
+    socket.emit 'currentUser', session.user
     socket.emit 'online', data.online
 
     socket.on 'disconnect', ->

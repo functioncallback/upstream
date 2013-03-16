@@ -5,6 +5,9 @@ window.App = Model: {}, Controller: {}
 # socket.io
 
 App.socket = io.connect()
+App.socket.on 'connect', noop = ->
+  document.location.reload() unless App.socket.socket.connected
+  setTimeout noop, 5000
 
 # ng-app
 
@@ -42,7 +45,7 @@ module.directive 'autoscroll', () ->
   return (scope, element, attrs) ->
     return unless scope.$last
     ul = $('#messages')
-    ul.animate { scrollTop: ul.prop('scrollHeight') }, 'fast'
+    ul.animate { scrollTop: 2 * ul.prop('scrollHeight') }, 'fast'
 
 module.directive 'bypass', () ->
   return (scope, element, attrs) ->

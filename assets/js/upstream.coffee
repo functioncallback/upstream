@@ -33,14 +33,6 @@ lab.factory 'PrivateMessage', ['$resource', (resource) -> build(resource, 'Priva
 
 build = (resource, name, pluralized) ->
   Resource = resource endpoint(pluralized), update: method: 'PUT'
-
-  Resource.prototype.update = (r) ->
-    return Resource.update({ id: this._id },
-      angular.extend({}, this, _id: undefined), r)
-
-  Resource.prototype.destroy = (r) ->
-    return Resource.remove({ id: this._id }, r)
-
   angular.extend(Resource, App.Model[name]?.prototype)
   Resource
 

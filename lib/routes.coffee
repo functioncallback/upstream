@@ -23,7 +23,7 @@ exports.init = (app, auth) ->
 
   app.get /^\/(?!css\/|js\/).*/, requireUser, storeUser, (req, res) ->
     fs.exists path.resolve("views#{req.url}.jade"), (exists) ->
-      return res.render(req.url.substr(1)) if exists and req.url.match /partials\//
+      return res.render(req.url.substr(1)) if exists and req.url.match /^\/partials/
       res.render('layout')
 
 resource = inject: (app) ->
@@ -43,21 +43,6 @@ resource = inject: (app) ->
     app.get "#{endpoint}/:id", requireUser, (req, res) ->
       Resource.findOne { _id: req.params.id }, (err, doc) ->
         res.send doc
-
-    #app.post endpoint, requireUser, (req, res) ->
-    #  console.log 'req.body ------> ', req.body
-    #  doc = new Resource(req.body).save (err) ->
-    #    console.log 'doc ------------> ', doc
-    #    res.send doc
-
-    #app.put "#{endpoint}/:id", requireUser, (req, res) ->
-    #  Resource.findOne { _id: req.params.id }, (err, existing) ->
-    #    return if err or not existing
-    #    changes = _.omit(existing, '_id')
-    #    Resource.update { _id: existing._id }, { $set: changes }, (err) ->
-    #      res.send _.extend(existing, changes) unless err
-
-    return this
 
 storeUser = (req, res, next) ->
   req.user = name: 'Wagner Camarao', _id: '512ba2afbee4990000000001', isAdmin: true if bypass

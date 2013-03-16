@@ -5,9 +5,10 @@ exports.init = (io, sessionSockets) ->
   data = online: {}, sockets: {}
 
   io.configure ->
+    logLevel = if process.env.NODE_ENV == 'production' then 0 else 1
     io.set 'transports', ['xhr-polling']
     io.set 'polling duration', 10
-    io.set 'log level', 2
+    io.set 'log level', logLevel
 
   sessionSockets.on 'connection', (err, socket, session) ->
     return unless valid(err, socket, session)
@@ -63,7 +64,7 @@ exports.init = (io, sessionSockets) ->
         console.log err, saved
         socket.emit 'err', friendly(err) if err
         if saved
-          data.sockets[saved.to._id]?.emit 'post:private', saved
+          data.sockets[saved.toId]?.emit 'post:private', saved
           socket.emit 'post:private', saved
 
   Stream.find (err, streams) ->

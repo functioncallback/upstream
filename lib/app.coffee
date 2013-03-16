@@ -14,7 +14,7 @@ exports.init = (sessionStore, cookieParser) ->
     app.set 'views', path.resolve('views')
     app.set 'view engine', 'jade'
 
-    app.use express.logger 'dev'
+    app.use express.logger()
     app.use express.bodyParser()
     app.use express.methodOverride()
     app.use cookieParser

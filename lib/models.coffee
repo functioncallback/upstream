@@ -3,27 +3,33 @@ _ = require 'underscore'
 mongoose = require 'mongoose'
 db = mongoose.createConnection config.mongo.url
 ObjectId = mongoose.Schema.Types.ObjectId
-schemas = definitions: {}
+definitions = {}
+schemas = {}
 
 exports.init = (callback) ->
   db.on 'error', -> callback 'error connecting to mongodb'
   db.once 'open', -> bootstrap() && callback()
 
 def = (name, schema) ->
-  schemas.definitions[name] = _.extend({}, base, schema)
-  schemas[name] = new mongoose.Schema schemas.definitions[name]
+  definitions[name] = _.extend({}, schema, timestamp)
+  schemas[name] = new mongoose.Schema definitions[name]
   global[name] = db.model name, schemas[name]
   schemas[name].pre 'save', (next) ->
     @updatedAt = Date.now()
     next()
 
+cache = (withinClassName, settings) ->
+  for key, mapping of settings
+    for className, attributes of mapping
+      schemas[withinClassName].pre 'save', (next) ->
+        global[className].findOne { _id: this["#{key}Id"] }, (err, model) =>
+          this[key] = _.pick(model, attributes) if model and attributes
+          next()
+
 extend = (base, definition) ->
-  _.extend _.clone(schemas.definitions[base]), definition
+  _.extend _.clone(definitions[base]), definition
 
-minify = (o) ->
-  _.pick(o, 'name', 'slug', 'picture', 'updatedAt')
-
-base =
+timestamp =
   createdAt: { type: Date, default: Date.now }
   updatedAt: { type: Date }
 
@@ -57,27 +63,8 @@ bootstrap = ->
     @slug = slug(@name).toLowerCase().match(/\w|-/g).join('') if @name
     next()
 
-  schemas.Stream.pre 'save', (next) ->
-    User.findOne { _id: @ownerId }, (err, user) =>
-      @owner = minify(user)
-      next()
-
-  schemas.Message.pre 'save', (next) ->
-    User.findOne { _id: @fromId }, (err, user) =>
-      @from = minify(user)
-      next()
-
-  schemas.Message.pre 'save', (next) ->
-    Stream.findOne { _id: @toId }, (err, stream) =>
-      @to = minify(stream)
-      next()
-
-  schemas.PrivateMessage.pre 'save', (next) ->
-    User.findOne { _id: @fromId }, (err, user) =>
-      @from = minify(user)
-      next()
-
-  schemas.PrivateMessage.pre 'save', (next) ->
-    User.findOne { _id: @toId }, (err, user) =>
-      @to = minify(user)
-      next()
+  cache 'Stream', owner: User: ['name', 'picture', 'updatedAt']
+  cache 'Message', from: User: ['name', 'picture', 'updatedAt']
+  cache 'Message', to: Stream: ['name', 'slug', 'updatedAt']
+  cache 'PrivateMessage', from: User: ['name', 'picture', 'updatedAt']
+  cache 'PrivateMessage', to: User: ['name', 'picture', 'updatedAt']

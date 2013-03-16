@@ -18,4 +18,4 @@ p
 p
 
 span(ng-repeat='u in users | orderBy: "_id"')
-  img(src='{{u.picture}}', ui-if='u.picture', style='height: 50px; margin-right: 1px')
+  img(src='{{u.picture}}', ui-if='u.picture != "/img/avatar.png"', style='height: 50px; margin-right: 1px')

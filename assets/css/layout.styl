@@ -13,7 +13,7 @@ $people = olivedrab
   border-radius: 3px
   -webkit-font-smoothing: antialiased
 
-html, body
+html, body, #connected
   height: 100%
   overflow: hidden
 
@@ -124,7 +124,7 @@ textarea
 #logo
   color: #eee
   border-radius: 0
-  background: #111 url('/img/icon/globe-3.png') no-repeat 10px 8px
+  background: #111 url('/img/icon/share-2.png') no-repeat 10px 8px
   background-size: 24px
   padding: 8px 10px 2px 42px
   display: inline-block
@@ -183,6 +183,21 @@ textarea
 // ---------------------------------------------------
 // content
 // ---------------------------------------------------
+
+#disconnected
+  background: FireBrick
+  display: none
+  color: white
+  position: absolute
+  left: 265px
+  padding: 10px
+  top: 50px
+  z-index: 1
+
+  a
+    color: white
+    padding: 0
+    text-decoration: underline
 
 #left
   .side-title

@@ -14,29 +14,27 @@ exports.init = (app, auth) ->
     req.logout()
     res.redirect '/'
 
-  build = resource.inject(app).build
+  expose = api.inject(app).expose
 
-  build Stream, 'streams'
-  build User, 'users'
-  build Message, 'messages'
-  build PrivateMessage, 'private-messages'
+  expose Stream, 'streams'
+  expose User, 'users'
+  expose Message, 'messages'
+  expose PrivateMessage, 'private-messages'
 
   app.get /^\/(?!css\/|js\/).*/, requireUser, storeUser, (req, res) ->
     fs.exists path.resolve("views#{req.url}.jade"), (exists) ->
       return res.render(req.url.substr(1)) if exists and req.url.match /^\/partials/
       res.render('layout')
 
-resource = inject: (app) ->
-  build: (Resource, pluralized) ->
+api = inject: (app) ->
+  expose: (Resource, pluralized) ->
     endpoint = "/v#{apiVersion}/#{pluralized}"
 
     app.get endpoint, requireUser, (req, res) ->
       if req.query.fromOrTo
-        options = []
-        options.push fromId: req.session.user._id, toId: req.query.fromOrTo
-        options.push fromId: req.query.fromOrTo, toId: req.session.user._id
-        Resource.find().or(options).exec (err, docs) ->
-          res.send docs
+        options = [{ fromId: req.session.user._id, toId: req.query.fromOrTo },
+                   { fromId: req.query.fromOrTo, toId: req.session.user._id }]
+        Resource.find().or(options).exec (err, docs) -> res.send docs
       else
         Resource.find _.pick(req.query, 'slug', 'toId'), (err, docs) -> res.send docs
 

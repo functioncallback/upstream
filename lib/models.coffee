@@ -8,7 +8,7 @@ schemas = {}
 
 exports.init = (callback) ->
   db.on 'error', -> callback 'error connecting to mongodb'
-  db.once 'open', -> bootstrap() && callback()
+  db.once 'open', -> bootstrap() and callback()
 
 def = (name, schema) ->
   definitions[name] = _.extend({}, schema, timestamp)
@@ -40,7 +40,7 @@ bootstrap = ->
     givenName: { type: String, required: true }
     familyName: { type: String, required: true }
     email: { type: String, required: true }
-    picture: String
+    picture: { type: String, default: '/img/avatar.png' }
     gender: String
 
   def 'Stream',

@@ -1,6 +1,6 @@
 doctype 5
 html(ng-app='upstream')
-  head
+head
     title {{title}} @upstream real-time content streaming
 
     link(rel='icon', href='/favicon.ico', type='image/x-icon')
@@ -23,80 +23,89 @@ html(ng-app='upstream')
     !=js('modules/stream')
     !=js('modules/user')
 
-  body
-    table#layout
+  body(socket)
 
-      // HEADER
+    #disconnected
+      h2 Disconnected
+      p
+        a(href='javascript:location.reload()') Please try reloading the page
+      span='If it happens again please '
+      a(href='https://github.com/functioncallback/upstream/issues/new', target='_blank') file an issue
 
-      tr
-        td#header(colspan='3')
+    #connected
+      table#layout
 
-          a#logo(href='/')
-            strong up
-            span stream
+        // HEADER
 
-          #title {{title}}
+        tr
+          td#header(colspan='3')
 
-          #search
-            input.search(placeholder='Search', ng-model='messageFilter')
+            a#logo(href='/')
+              strong up
+              span stream
 
-          #links
-            #account=user.name
-            #signout(onclick='location.href = "/signout"') Sign out
+            #title {{title}}
 
-      // STREAMS
+            #search
+              input.search(placeholder='Search', ng-model='messageFilter')
 
-      tr
-        td#left(rowspan='2', ng-controller='App.Controller.Streams')
-          .abs
-            .side-title
-              strong {{streams.length || '?'}}
-              span=' STREAMS'
-              .add(ng-click='new()') + NEW
-            input.filter(placeholder='Filter', ng-model='streamFilter')
+            #links
+              #account=user.name
+              #signout(onclick='location.href = "/signout"') Sign out
 
-          ul#streams
-            li.selected(ui-if='isNew()')
-              input.editable(ng-model='stream.name', ui-event="{ change: 'create()', blur: 'cancel()' }",
-                ui-keydown="{ esc: 'cancel()' }", placeholder='New Stream', autofocus)
+        // STREAMS
 
-            li(ng-repeat='s in streams | filter:streamFilter | orderBy:"name"',
-              ng-class='{ selected: editable() }', ng-click='open()')
+        tr
+          td#left(rowspan='2', ng-controller='App.Controller.Streams')
+            .abs
+              .side-title
+                strong {{streams.length || '?'}}
+                span=' STREAMS'
+                .add(ng-click='new()') + NEW
+              input.filter(placeholder='Filter', ng-model='streamFilter')
 
-              a(ng-hide='editable()') {{s.name}}
-                .edit(ng-click='edit()', bypass)
+            ul#streams
+              li.selected(ui-if='isNew()')
+                input.editable(ng-model='stream.name', ui-event="{ change: 'create()', blur: 'cancel()' }",
+                  ui-keydown="{ esc: 'cancel()' }", placeholder='New Stream', autofocus)
 
-              div(ui-if='editable()')
-                input(ng-model='stream._id', type='hidden')
-                input.editable(ng-model='stream.name', ui-event="{ change: 'update()', blur: 'cancel(10)' }",
-                  ui-keydown="{ esc: 'cancel()' }", autofocus, bypass)
+              li(ng-repeat='s in streams | filter:streamFilter | orderBy:"name"',
+                ng-class='{ selected: editable() }', ng-click='open()')
 
-                .delete(ng-click='delete()', ui-if='currentUser.isAdmin')
+                a(ng-hide='editable()') {{s.name}}
+                  .edit(ng-click='edit()', bypass)
 
-        // CONTENT
+                div(ui-if='editable()')
+                  input(ng-model='stream._id', type='hidden')
+                  input.editable(ng-model='stream.name', ui-event="{ change: 'update()', blur: 'cancel(10)' }",
+                    ui-keydown="{ esc: 'cancel()' }", autofocus, bypass)
 
-        td#middle(ng-view)
+                  .delete(ng-click='delete()', ui-if='currentUser.isAdmin')
 
-        // PEOPLE
+          // CONTENT
 
-        td#right(rowspan='2', ng-controller='App.Controller.Users')
-          .abs
-            .side-title
-              strong {{users.length || '?'}}
-              span=' PEOPLE'
-              .add(ng-click='invite()') + INVITE
+          td#middle(ng-view)
 
-            input.filter(placeholder='Filter', ng-model='userFilter')
+          // PEOPLE
 
-          ul#people
-            li(ng-repeat='u in users | filter:userFilter | orderBy:"name"', ng-click='open()')
-              img(ng-src='{{u.picture || "/img/avatar.png"}}')
-              span {{u.name}}
+          td#right(rowspan='2', ng-controller='App.Controller.Users')
+            .abs
+              .side-title
+                strong {{users.length || '?'}}
+                span=' PEOPLE'
+                .add(ng-click='invite()') + INVITE
 
-      // FOOTER
+              input.filter(placeholder='Filter', ng-model='userFilter')
 
-      tr
-        td#footer(ng-controller='App.Controller.Footer', ui-if='object')
-          textarea#message(ng-model='message.body', ui-keydown="{ enter: 'send($event)' }", autofocus)
+            ul#people
+              li(ng-repeat='u in users | filter:userFilter | orderBy:"name"', ng-click='open()')
+                img(ng-src='{{u.picture}}')
+                span {{u.name}}
 
-    .err.msg(ui-if='err') {{err}}
+        // FOOTER
+
+        tr
+          td#footer(ng-controller='App.Controller.Footer', ui-if='object')
+            textarea#message(ng-model='message.body', ui-keydown="{ enter: 'send($event)' }", autofocus)
+
+      .err.msg(ui-if='err') {{err}}

@@ -1,13 +1,8 @@
 # namespace
-
 window.App = Model: {}, Controller: {}
 
 # socket.io
-
 App.socket = io.connect()
-App.socket.on 'connect', noop = ->
-  document.location.reload() unless App.socket.socket.connected
-  setTimeout noop, 5000
 
 # ng-app
 
@@ -40,6 +35,14 @@ build = (resource, name, pluralized) ->
   Resource
 
 # directives
+
+module.directive 'socket', () ->
+  return (scope, element, attributes) ->
+    connected = $('#connected')
+    disconnected = $('#disconnected')
+    App.socket.on 'disconnect', ->
+      connected.css(opacity: .3, 'pointer-events': 'none')
+      disconnected.show()
 
 module.directive 'autoscroll', () ->
   return (scope, element, attrs) ->

@@ -67,7 +67,7 @@ exports.init = (io, sessionSockets) ->
         socket.emit 'err', friendly(err) if err
         if saved
           data.sockets[saved.toId]?.emit 'post:private', saved
-          socket.emit 'post:private', saved if data.sockets[saved.toId].id != socket.id
+          socket.emit 'post:private', saved if data.sockets[saved.toId]?.id != socket.id
 
   Stream.find (err, streams) ->
     namespace(stream) for stream in streams

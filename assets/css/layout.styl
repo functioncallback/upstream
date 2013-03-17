@@ -73,7 +73,7 @@ input.filter
   margin: 5px 0
 
 textarea
-  resize: none
+  resize: vertical
 
 // ---------------------------------------------------
 // layout
@@ -90,6 +90,12 @@ textarea
     color: #eee
     height: 42px
 
+  #composer
+    padding: 5px 7px
+
+    #message
+      height: 66px
+
   #left, #middle, #right
     vertical-align: top
     padding: 5px
@@ -101,12 +107,6 @@ textarea
 
   #middle
     height: 100%
-
-  #footer
-    padding: 5px 7px
-
-    #message
-      height: 120px
 
   #streams, #messages, #people
     overflow: auto

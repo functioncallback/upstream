@@ -17,14 +17,13 @@ exports.init = (io, sessionSockets) ->
 
     data.online[session.user._id] = session.user
     data.sockets[session.user._id] = socket
-    socket.broadcast.emit 'signed:in', session.user
-    socket.emit 'currentUser', session.user
-    socket.emit 'online', data.online
+    socket.emit 'current:user', session.user
+    io.sockets.emit 'online', _.keys(data.online)
 
     socket.on 'disconnect', ->
       delete data.online[session.user._id]
       delete data.sockets[session.user._id]
-      io.sockets.emit 'signed:off', session.user._id
+      io.sockets.emit 'online', _.keys(data.online)
 
     socket.on 'post:stream', (stream) ->
       console.log 'post:stream', stream

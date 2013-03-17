@@ -99,7 +99,7 @@ html(ng-app='upstream')
               input.filter(placeholder='Filter', ng-model='userFilter')
 
             ul#people
-              li(ng-repeat='u in users | filter:userFilter | orderBy:"name"', ng-click='open()')
+              li(ng-repeat='u in users | filter:userFilter | orderBy:["-isOnline","name"]', ng-click='open()', ng-class='{ online: u.isOnline }' )
                 img(ng-src='{{u.picture}}')
                 span {{u.name}}
 

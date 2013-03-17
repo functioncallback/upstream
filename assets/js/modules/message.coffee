@@ -44,7 +44,7 @@ App.Controller.PrivateMessages = ['$scope', '$rootScope', '$routeParams', '$loca
         scope.messages = messages
 ]
 
-App.Controller.Footer = ['$scope', '$rootScope', 'Message',
+App.Controller.Composer = ['$scope', '$rootScope', 'Message',
   (scope, rootScope, Message) ->
 
     scope.send = (event) ->

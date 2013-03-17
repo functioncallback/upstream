@@ -46,9 +46,8 @@ module.directive 'socket', () ->
 
 module.directive 'autoscroll', () ->
   return (scope, element, attrs) ->
-    return unless scope.$last
-    ul = $('#messages')
-    setTimeout((-> ul.scrollTop ul.prop('scrollHeight')), 1000)
+    return unless scope.$first
+    $('#messages').scrollTop 0
 
 module.directive 'bypass', () ->
   return (scope, element, attrs) ->

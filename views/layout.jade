@@ -81,9 +81,11 @@ html(ng-app='upstream')
 
                   .delete(ng-click='delete()', ui-if='currentUser.isAdmin')
 
-          // CONTENT
+          // COMPOSER
 
-          td#middle(ng-view)
+          td(ui-if='!object')
+          td#composer(ng-controller='App.Controller.Composer', ui-if='object')
+            textarea#message(ng-model='message.body', ui-keydown="{ enter: 'send($event)' }", autofocus)
 
           // PEOPLE
 
@@ -101,10 +103,11 @@ html(ng-app='upstream')
                 img(ng-src='{{u.picture}}')
                 span {{u.name}}
 
-        // FOOTER
+        // CONTENT
 
         tr
-          td#footer(ng-controller='App.Controller.Footer', ui-if='object')
-            textarea#message(ng-model='message.body', ui-keydown="{ enter: 'send($event)' }", autofocus)
+          td#middle(ng-view)
+
+      // ERR
 
       .err.msg(ui-if='err') {{err}}

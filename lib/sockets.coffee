@@ -5,10 +5,12 @@ exports.init = (io, sessionSockets) ->
   data = online: {}, sockets: {}
 
   io.configure ->
-    logLevel = if process.env.NODE_ENV == 'production' then 0 else 1
-    io.set 'transports', ['xhr-polling']
-    io.set 'polling duration', 10
-    io.set 'log level', logLevel
+    if process.env.NODE_ENV == 'production'
+      io.set 'transports', ['xhr-polling']
+      io.set 'polling duration', 10
+      io.set 'log level', 0
+    else
+      io.set 'log level', 1
 
   sessionSockets.on 'connection', (err, socket, session) ->
     return unless valid(err, socket, session)

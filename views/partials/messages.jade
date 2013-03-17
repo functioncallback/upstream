@@ -1,5 +1,5 @@
 ul#messages
-  li(ng-repeat='m in messages | filter:messageFilter | orderBy: "createdAt"', autoscroll)
+  li(ng-repeat='m in messages | filter:messageFilter | orderBy: "-createdAt"', autoscroll)
     .from
       img(ng-src='{{m.from.picture}}')
       strong {{m.from.name || '?'}}

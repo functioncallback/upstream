@@ -1,6 +1,6 @@
 doctype 5
 html(ng-app='upstream')
-head
+  head
     title {{title}} @upstream real-time content streaming
 
     link(rel='icon', href='/favicon.ico', type='image/x-icon')
@@ -27,10 +27,9 @@ head
 
     #disconnected
       h2 Disconnected
-      p
-        a(href='javascript:location.reload()') Please try reloading the page
+      a.block(href='javascript:location.reload()') Please try reloading the page
       span='If it happens again please '
-      a(href='https://github.com/functioncallback/upstream/issues/new', target='_blank') file an issue
+      a(href='https://github.com/functioncallback/upstream/issues/new', target='_blank') file an issue on github
 
     #connected
       table#layout

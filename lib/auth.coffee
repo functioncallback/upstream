@@ -17,7 +17,7 @@ exports.init = (sockets) ->
           changes = _.pick(existing, 'name', 'familyName', 'givenName', 'email', 'picture', 'gender')
           console.log 'updating user', changes
           User.update { _id: existing._id }, { $set: changes }, (err) ->
-            console.log err
+            console.log 'err', err
             return done err if err
             sockets.emit 'reload:users'
             User.findOne { _id: existing._id }, (err, user) =>

@@ -48,7 +48,7 @@ module.directive 'autoscroll', () ->
   return (scope, element, attrs) ->
     return unless scope.$last
     ul = $('#messages')
-    ul.animate { scrollTop: 2 * ul.prop('scrollHeight') }, 'fast'
+    setTimeout((-> ul.scrollTop ul.prop('scrollHeight')), 1000)
 
 module.directive 'bypass', () ->
   return (scope, element, attrs) ->

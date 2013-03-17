@@ -49,10 +49,10 @@ exports.init = (io, sessionSockets) ->
           io.sockets.emit 'reload:streams' if updated
 
     socket.on 'delete:stream', (id) ->
-      console.log 'delete:stream', id
-      return unless id
+      console.log 'delete:stream', id, session.user.isAdmin, session.user
+      return unless id and session.user.isAdmin
       Stream.remove { _id: id }, (err) ->
-        console.log 'err', err if err
+        console.log 'err', err
         io.sockets.emit 'delete:stream', id unless err
         io.sockets.emit 'reload:streams' unless err
 
@@ -65,7 +65,7 @@ exports.init = (io, sessionSockets) ->
         socket.emit 'err', friendly(err) if err
         if saved
           data.sockets[saved.toId]?.emit 'post:private', saved
-          socket.emit 'post:private', saved
+          socket.emit 'post:private', saved if data.sockets[saved.toId].id != socket.id
 
   Stream.find (err, streams) ->
     namespace(stream) for stream in streams

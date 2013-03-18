@@ -86,6 +86,11 @@ html(ng-app='upstream')
           td(ui-if='!object')
           td#composer(ng-controller='App.Controller.Composer', ui-if='object')
             textarea#message(ng-model='message.body', ui-keydown="{ enter: 'send($event)' }", autofocus)
+            .inplace
+              .from
+                img(ng-src='{{currentUser.picture}}')
+                strong {{currentUser.name || ''}}
+              .date {{now | date:'MMM d, yyyy - hh:mm a'}}
 
           // PEOPLE
 

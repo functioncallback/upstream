@@ -47,6 +47,13 @@ App.Controller.PrivateMessages = ['$scope', '$rootScope', '$routeParams', '$loca
 App.Controller.Composer = ['$scope', '$rootScope', 'Message',
   (scope, rootScope, Message) ->
 
+    scope.now = new Date
+    wait = 61 - scope.now.getSeconds()
+    setTimeout((->
+      scope.$apply -> scope.now = new Date
+      setInterval((-> scope.$apply -> scope.now = new Date), 60 * 1000)
+    ), wait * 1000)
+
     scope.send = (event) ->
       event.preventDefault()
       message = _.extend(scope.message, toId: rootScope.object._id)

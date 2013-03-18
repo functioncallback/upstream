@@ -261,24 +261,43 @@ textarea
       background-color: #f5f5f5
       border: 1px solid #ccc
 
-    .from
-      img
-        border: 1px solid #333
-        margin-right: 5px
-        vertical-align: top
-        width: 30px
+#composer
+  position: relative
 
-      strong
-        color: #555
-        display: inline-block
-        margin-top: 5px
+  textarea
+    border-color: #ccc
+    padding-top: 36px
+    padding-left: 180px
 
-    .date
-      color: #aaa
-      margin-right: 15px
+    &:focus
+      background: #f5f5f5
 
-    .date, .body
+  .inplace
+    opacity: .7
+    pointer-events: none
+    position: absolute
+    top: 10px
+    left: 12px
+
+#messages li, #composer
+  .from
+    img
+      border: 1px solid #333
+      margin-right: 5px
+      vertical-align: top
+      width: 30px
+
+    strong
+      color: #555
       display: inline-block
+      margin-top: 5px
+
+  .date
+    color: #aaa
+    margin-right: 15px
+
+  .date, .body
+    display: inline-block
 
 #streams, #messages, #people
   li

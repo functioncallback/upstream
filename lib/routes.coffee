@@ -43,7 +43,7 @@ api = inject: (app) ->
         res.send doc
 
 storeUser = (req, res, next) ->
-  req.user = name: 'Wagner Camarao', _id: '512ba2afbee4990000000001', isAdmin: true if bypass
+  req.user = stubMe if bypass
   req.session.user = req.user if bypass
   res.locals.user = req.user if bypass || req.isAuthenticated()
   next()
@@ -57,3 +57,8 @@ requireGuest = (req, res, next) ->
   next()
 
 bypass = process.env.BYPASS
+stubMe =
+  _id: '512ba2afbee4990000000001'
+  name: 'Wagner Camarao'
+  picture: 'https://lh4.googleusercontent.com/-8DqTu6fIpxo/AAAAAAAAAAI/AAAAAAAAAGE/WbOipmwiZwA/photo.jpg'
+  isAdmin: true

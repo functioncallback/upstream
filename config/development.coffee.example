@@ -1,13 +1,19 @@
-# Steps 1-2
+# Development configuration (5 steps)
+
+# Step 1
+# Save this file as config/development.coffee
+# and update it according to the following
+
+# Steps 2-3
 # Create a mongo database on https://mongolab.com
-# Update the following with your database credentials
+# and update the following with your database credentials
 
 exports.mongo =
   url: 'mongodb://username:password@hostname.mongolab.com:27267/upstream'
 
-# Steps 3-4
+# Steps 4-5
 # Create a project on https://code.google.com/apis/console
-# Update the following with your project credentials
+# and update the following with your project credentials
 
 exports.auth =
   google:
@@ -15,5 +21,12 @@ exports.auth =
     clientSecret: 'xxxxxxxxxxxxxxxxxxx'
     callbackURL: 'http://localhost:7000/auth/google/callback'
 
-# Step 5
-# Rename this file to config/development.coffee
+# socket.io log level
+
+# 0 - error
+# 1 - warn
+# 2 - info
+# 3 - debug
+
+exports.io =
+  logLevel: 1

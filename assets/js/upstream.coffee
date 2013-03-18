@@ -37,7 +37,7 @@ build = (resource, name, pluralized) ->
 # directives
 
 module.directive 'socket', () ->
-  return (scope, element, attributes) ->
+  return (scope, element, attrs) ->
     connected = $('#connected')
     disconnected = $('#disconnected')
     App.socket.on 'disconnect', ->
@@ -55,3 +55,8 @@ module.directive 'bypass', () ->
       event.stopImmediatePropagation()
       event.stopPropagation()
       event.preventDefault()
+
+module.directive 'composeinplace', () ->
+  return (scope, element, attrs) ->
+    $('#message').blur -> $('#composeinplace').removeClass('focus')
+    $('#message').focus -> $('#composeinplace').addClass('focus')
